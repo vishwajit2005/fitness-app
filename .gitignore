@@ -1,0 +1,36 @@
+# Java Maven Build outputs
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+
+# Node/React Frontend
+**/node_modules/
+**/dist/
+**/dist-ssr/
+*.local
+
+# Logs
+*.log
+**/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE / Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# OS related files
+Thumbs.db
+db.properties
+my.properties

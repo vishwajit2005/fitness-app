@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database for User Service
+  postgres:
+    image: postgres:15-alpine
+    container_name: fitness-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: fitness_user_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin@123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - fitness-network
+
+  # MongoDB Database for Activity and AI Services
+  mongodb:
+    image: mongo:6.0
+    container_name: fitness-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - fitness-network
+
+  # RabbitMQ Broker for Asynchronous Communication
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: fitness-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
+    networks:
+      - fitness-network
+
+  # Keycloak for Identity & Access Management (OAuth2 Provider)
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.2
+    container_name: fitness-keycloak
+    command: start-dev
+    ports:
+      - "8181:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: dev-file
+    networks:
+      - fitness-network
+
+volumes:
+  pgdata:
+  mongodata:
+  rabbitmqdata:
+
+networks:
+  fitness-network:
+    driver: bridge
